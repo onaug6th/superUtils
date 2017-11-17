@@ -6,6 +6,36 @@
  */
 
 (function (win, $) {
+    (function ($) {
+        'use strict';
+    
+        var DEFAULTS = {
+            color:'red'
+        }
+    
+        $.fn.loadComponent = function (option) {
+            var value,
+                args = Array.prototype.slice.call(arguments, 1);
+            this.each(function () {
+                var $this = $(this),
+                    options = $.extend({},DEFAULTS,option );
+                $(document).ajaxStart(function(){
+                    $this.css("background","red");
+                }).ajaxStop(function(){
+                    $this.css("background","white");
+                })
+            });
+            
+        }
+    })($);
+    // if (typeof Array.prototype.forEach != 'function') {
+    Array.prototype.forEach = function (callback) {
+        for (var i = 0; i < this.length; i++) {
+            callback.apply(this, [this[i], i, this]);
+        }
+    };
+    // }
+
     /**
      * 超级工具
      * @type { method }
@@ -16,6 +46,60 @@
          * @type { string }
          */
         version: "0.1",
+        /**
+         * 选择性深拷贝
+         * @type { method }
+         * @param { object } obj 拷贝对象
+         * @param { any } 是否深拷贝
+         */
+        customCopy: function (obj, deep) {
+            var object = {};
+            if (deep) {
+                for (var i in obj) {
+                    if (obj.hasOwnProperty(i)) {
+                        object[i] = obj[i]
+                    }
+                }
+            }else{
+                object = obj;
+            }
+            return object;
+        },
+        /**
+         * 根据参数生成特定长度的随机数
+         * @type { method }
+         * @param { string } len 长度
+         * @param { string } minus 负数
+         * 16 => 16 ; 8 , -1 => -16
+         */
+        customRandomNumber: function (len, minus) {
+            len = len ? len : 10;
+            var randomNumber = Math.random().toString();
+            randomNumber = randomNumber.substr(randomNumber.indexOf(".") + 1, minus ? len * 2 : len);
+            minus ? randomNumber = -randomNumber : "";
+            return randomNumber;
+        },
+        /**
+         * 获取最大公共字符串
+         * @type { method }
+         * @param {string} str1 字符串1
+         * @param {string} str2 字符串2
+         * abaababbb,ababa => abab
+         */
+        getBigCommonStr: function (str1, str2) {
+            // str1 = str1.split("");
+            // str2 = str2.split("");
+            // var sameArr = [];
+            // for (var i = 0; i < str1.length; i++) {
+            //     for (var j = 0; j < str2.length; j++) {
+            //         if (str1[i] == str2[j]) {
+            //             sameArr.push(str1[i]);
+            //             for(var a = 0;a<)
+            //             break;
+            //         }
+            //     }
+            // }
+        },
         /**
          * 计算数组中最大值与最小值的差值
          * @type { method }
