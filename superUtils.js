@@ -6,28 +6,6 @@
  */
 
 (function (win, $) {
-    (function ($) {
-        'use strict';
-    
-        var DEFAULTS = {
-            color:'red'
-        }
-    
-        $.fn.loadComponent = function (option) {
-            var value,
-                args = Array.prototype.slice.call(arguments, 1);
-            this.each(function () {
-                var $this = $(this),
-                    options = $.extend({},DEFAULTS,option );
-                $(document).ajaxStart(function(){
-                    $this.css("background","red");
-                }).ajaxStop(function(){
-                    $this.css("background","white");
-                })
-            });
-            
-        }
-    })($);
     // if (typeof Array.prototype.forEach != 'function') {
     Array.prototype.forEach = function (callback) {
         for (var i = 0; i < this.length; i++) {
@@ -60,7 +38,7 @@
                         object[i] = obj[i]
                     }
                 }
-            }else{
+            } else {
                 object = obj;
             }
             return object;
@@ -87,18 +65,31 @@
          * abaababbb,ababa => abab
          */
         getBigCommonStr: function (str1, str2) {
-            // str1 = str1.split("");
-            // str2 = str2.split("");
-            // var sameArr = [];
-            // for (var i = 0; i < str1.length; i++) {
-            //     for (var j = 0; j < str2.length; j++) {
-            //         if (str1[i] == str2[j]) {
-            //             sameArr.push(str1[i]);
-            //             for(var a = 0;a<)
-            //             break;
-            //         }
-            //     }
-            // }
+            str1 = str1.split("");
+            str2 = str2.split("");
+
+            var nowStr = "";
+            var longgestStr = "";
+
+            for (var i = 0; i < str1.length; i++) {
+                for (var j = 0; j < str2.length; j++) {
+                    if (str1[i] == str2[j]) {
+                        nowStr = "";
+                        eachStr(i, j);
+                    }
+                }
+            }
+
+            function eachStr(i, j) {
+                if (str1[i] == str2[j] && str1[i] !== undefined) {
+                    nowStr += str1[i];
+                    if(nowStr.length > longgestStr.length){
+                        longgestStr = nowStr;
+                    }
+                    eachStr(i + 1, j + 1);
+                }
+            }
+            return longgestStr;
         },
         /**
          * 计算数组中最大值与最小值的差值
