@@ -76,7 +76,7 @@
             for(var i in p){
                 if(typeof p[i] === 'object'){
                     c[i] = (p[i].constructor === Array) ? [] : {};
-                    deepCopy(p[i],c[i]);
+                    this.deepCopy(p[i],c[i]);
                 }else{
                     c[i] = p[i];
                 }
@@ -279,7 +279,7 @@
                     if (arr[i] > arr[j]) {
                         let tem = arr[i];
                         arr[i] = arr[j];
-                        arr[j] = tem
+                        arr[j] = tem;
                     }
                 }
             }
