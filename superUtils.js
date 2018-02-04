@@ -17,6 +17,46 @@
          */
         version: "0.1",
         /**
+         * 大数相加
+         * javascript能表示的最大数值是Number.MAX_VALUE，即1.7976931348623157e+308，这个数值虽然能够正确表示出来，但是存在一个精度丢失的问题。
+         * 避免精度丢失或者就要实现大数的相加，解决方法的思路是以字符串的形式来相加
+         * @param {String|Number} a 
+         * @param {String|Number} b
+         * @returns {String} 
+         */
+        addBigTreeNumber: function (a, b) {
+            var aList = typeof a === "string" ? a.split("").reverse() : String(a).split("").reverse();
+            var bList = typeof b === "string" ? b.split("").reverse() : String(b).split("").reverse();
+            //  max长度最大的数据
+            var max = Math.max(aList.length, bList.length);
+            //  cList用于存储返回的数据数组
+            var cList = [];
+            //  flag,是否进十位
+            var flag = 0;
+
+            //  以最大长度开始循环
+            for (var i = 0; i < max; i++) {
+                /**
+                 * aList[i] 与 bList[i]相加 与flag相加
+                 * 如果存在flag，则说明上次相加时大于10进了一位
+                 * 如果aList[i] 与 bList[i]相加大于9，即进10。tmp减去10然后添加flag进十位标记
+                 */
+                var tmp = (+aList[i] || 0) + (+bList[i] || 0) + flag;
+                flag = 0;
+                if (tmp > 9) {
+                    tmp -= 10;
+                    flag = 1;
+                }
+                cList.push(tmp);
+            }
+            //  循环结束后，如果还存在进十标记，往数组推进1
+            if (flag === 1) {
+                cList.push(flag);
+            }
+
+            return cList.reverse().join("");
+        },
+        /**
          * 计算数组中最大值与最小值的差值
          * @type { method }
          * @param { Array } arr 数组
