@@ -6,6 +6,14 @@
  */
 
 (function (win, $) {
+    // if (typeof Array.prototype.forEach != 'function') {
+    Array.prototype.forEach = function (callback) {
+        for (var i = 0; i < this.length; i++) {
+            callback.apply(this, [this[i], i, this]);
+        }
+    };
+    // }
+
     /**
      * 超级工具
      * @type { method }
@@ -22,7 +30,7 @@
          * 避免精度丢失或者就要实现大数的相加，解决方法的思路是以字符串的形式来相加
          * @param {String|Number} a 
          * @param {String|Number} b
-         * @returns {String} 
+         * @returns {String } 
          */
         addBigTreeNumber: function (a, b) {
             var aList = typeof a === "string" ? a.split("").reverse() : String(a).split("").reverse();
@@ -55,6 +63,73 @@
             }
 
             return cList.reverse().join("");
+        },
+        /**
+         * 选择性深拷贝
+         * @type { method }
+         * @param { object } obj 拷贝对象
+         * @param { any } 是否深拷贝
+         */
+        customCopy: function (obj, deep) {
+            var object = {};
+            if (deep) {
+                for (var i in obj) {
+                    if (obj.hasOwnProperty(i)) {
+                        object[i] = obj[i]
+                    }
+                }
+            } else {
+                object = obj;
+            }
+            return object;
+        },
+        /**
+         * 根据参数生成特定长度的随机数
+         * @type { method }
+         * @param { string } len 长度
+         * @param { string } minus 负数
+         * 16 => 16 ; 8 , -1 => -16
+         */
+        customRandomNumber: function (len, minus) {
+            len = len ? len : 10;
+            var randomNumber = Math.random().toString();
+            randomNumber = randomNumber.substr(randomNumber.indexOf(".") + 1, minus ? len * 2 : len);
+            minus ? randomNumber = -randomNumber : "";
+            return randomNumber;
+        },
+        /**
+         * 获取最大公共字符串
+         * @type { method }
+         * @param {string} str1 字符串1
+         * @param {string} str2 字符串2
+         * abaababbb,ababa => abab
+         */
+        getBigCommonStr: function (str1, str2) {
+            str1 = str1.split("");
+            str2 = str2.split("");
+
+            var nowStr = "";
+            var longgestStr = "";
+
+            for (var i = 0; i < str1.length; i++) {
+                for (var j = 0; j < str2.length; j++) {
+                    if (str1[i] == str2[j]) {
+                        nowStr = "";
+                        eachStr(i, j);
+                    }
+                }
+            }
+
+            function eachStr(i, j) {
+                if (str1[i] == str2[j] && str1[i] !== undefined) {
+                    nowStr += str1[i];
+                    if(nowStr.length > longgestStr.length){
+                        longgestStr = nowStr;
+                    }
+                    eachStr(i + 1, j + 1);
+                }
+            }
+            return longgestStr;
         },
         /**
          * 计算数组中最大值与最小值的差值
