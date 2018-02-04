@@ -65,23 +65,23 @@
             return cList.reverse().join("");
         },
         /**
-         * 选择性深拷贝
+         * 深拷贝
          * @type { method }
-         * @param { object } obj 拷贝对象
-         * @param { any } 是否深拷贝
+         * @param { object } p 拷贝对象
+         * @param { object } c 复制对象
          */
-        customCopy: function (obj, deep) {
-            var object = {};
-            if (deep) {
-                for (var i in obj) {
-                    if (obj.hasOwnProperty(i)) {
-                        object[i] = obj[i]
-                    }
+        deepCopy:function(p,c){
+            c = c || {};
+            
+            for(var i in p){
+                if(typeof p[i] === 'object'){
+                    c[i] = (p[i].constructor === Array) ? [] : {};
+                    deepCopy(p[i],c[i]);
+                }else{
+                    c[i] = p[i];
                 }
-            } else {
-                object = obj;
             }
-            return object;
+            return c;
         },
         /**
          * 根据参数生成特定长度的随机数
